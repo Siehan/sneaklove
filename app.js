@@ -17,9 +17,9 @@ const cookieParser = require("cookie-parser");
 
 // initial config
 app.set("view engine", "hbs");
-app.set("views", __dirname + "/view");
+app.set("views", __dirname + "/views");
 app.use(express.static("public"));
-hbs.registerPartials(__dirname + "/views/partials");
+hbs.registerPartials(__dirname + "/views/partial");
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use(cookieParser());

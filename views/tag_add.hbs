@@ -1,0 +1,14 @@
+<div class="big-container product-manage-wrapper flexed-item">
+  <form action="/tag-add" method="post" class="add-product-form" enctype="multiparty/form-data">
+    {{#if msg}}
+    <p class="msg {{msg.statu}}">{{msg.txt}}</p>
+    {{/if}}
+    <h3 class="form-title">Add TAG to the collection</h3>
+    <div class="form-item-wrapper flexed-item">
+      <label for="sneacker-name" class="label-name label">Model name</label>
+      <input name="label" type="text" class="input-text input" placeholder="Nike Air Max 90"
+        value="tag air max 1">
+    </div>
+    <button class="button-primary add-tag-btn">Add to collection</button>
+  </form>
+</div>

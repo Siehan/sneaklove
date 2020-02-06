@@ -8,10 +8,10 @@ const sneakerSchema = new Schema({
   ref: String,
   sizes: Number,
   price: Number,
-  category: { type: String,   enum: ["admin", "editor", "user" ] },
+  category: { type: String,   enum: ["women", "man", "kids" ] },
   id_tags: {
     type: [Schema.Types.ObjectId] ,
-    ref: "Tags",
+    ref: "Tag",
     required: true
   },
 });
