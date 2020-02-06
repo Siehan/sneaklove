@@ -24,6 +24,9 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use(cookieParser());
 
+const flash = require("connect-flash");
+app.use(flash());
+
 
 // SESSION SETUP
 app.use(
@@ -71,6 +74,8 @@ function eraseSessionMessage() {
 
 app.use(checkloginStatus);
 app.use(eraseSessionMessage());
+
+app.use(require("./middlewares/exposeFlashMessage"));
 
 // Getting/Using router(s)
 const basePageRouter = require("./routes/index");
