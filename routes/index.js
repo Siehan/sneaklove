@@ -61,6 +61,16 @@ router.get("/product-edit/:id", (req, res, next) => {
     .catch(next);
 });
 
+router.get("/delete-product/:id" , (req, res, next) => {
+   sneakerModel
+    .findByIdAndDelete(req.params.id)
+    .then(dbRes => {
+      req.flash("success", "album successfully deleted");
+      res.redirect("/prod-manage");
+    })
+    .catch(next);
+});
+
 
 router.get("/create-product", (req, res, next) => {
     tagModel
