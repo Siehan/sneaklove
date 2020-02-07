@@ -18,6 +18,28 @@ router.get("/one-product/:id", (req, res) => {
   res.send("baz");
 });
 
+router.get("/product-edit/:id", (req, res, next) => {
+    Promise.all([sneakerModel.findById( { "_id" : req.params.id } ) , tagModel.find()])
+    .then(dbResults => {
+        res.render("product_edit", {
+         sneaker : dbResults[0],
+         tags : dbResults[1]
+        });
+    })
+    .catch(next);
+});
+
+router.get("/delete-product/:id" , (req, res, next) => {
+   sneakerModel
+    .findByIdAndDelete(req.params.id)
+    .then(dbRes => {
+      req.flash("success", "album successfully deleted");
+      res.redirect("/prod-manage");
+    })
+    .catch(next);
+});
+
+
 router.get("/create-product", (req, res, next) => {
   tagModel
     .find()

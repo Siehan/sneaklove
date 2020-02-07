@@ -25,6 +25,7 @@
   margin-bottom: 1.2rem;
 }
 
+
 #form_user {
   display: flex;
   justify-content: center;
@@ -49,7 +50,7 @@
 
 .button-link-form {
   color: rgb(52, 52, 255);
-  padding-bottom: .1rem;
+ padding-bottom: .1rem;
 }
 
 .button-link-form:hover {
