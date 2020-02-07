@@ -3,6 +3,9 @@ const router = express.Router();
 const tagModel = require("../models/Tag");
 const sneakerModel = require("../models/Sneaker");
 
+const protectRoute = require("../middlewares/protectRoute");
+const protectAdminRoute = require("../middlewares/protectAdminRoute");
+
 router.get("/", (req, res) => {
    res.render("index");
 });
@@ -18,7 +21,7 @@ router.get("/sneakers/collection", (req, res, next) => {
     .catch(next);
 });
 
-router.get("/prod-manage", (req, res, next) => {
+router.get("/prod-manage", protectRoute,  (req, res, next) => {
     Promise.all([sneakerModel.find(), tagModel.find()])
     .then(dbResults => {
         res.render("products_manage", {
@@ -50,7 +53,7 @@ router.get("/one-product/:id", (req, res, next) => {
     .catch(next);
 });
 
-router.get("/product-edit/:id", (req, res, next) => {
+router.get("/product-edit/:id", protectRoute,  (req, res, next) => {
     Promise.all([sneakerModel.findById( { "_id" : req.params.id } ) , tagModel.find()])
     .then(dbResults => {
         res.render("product_edit", {
@@ -61,7 +64,7 @@ router.get("/product-edit/:id", (req, res, next) => {
     .catch(next);
 });
 
-router.get("/delete-product/:id" , (req, res, next) => {
+router.get("/delete-product/:id" , protectRoute,  (req, res, next) => {
    sneakerModel
     .findByIdAndDelete(req.params.id)
     .then(dbRes => {
@@ -72,7 +75,7 @@ router.get("/delete-product/:id" , (req, res, next) => {
 });
 
 
-router.get("/create-product", (req, res, next) => {
+router.get("/create-product", protectRoute,  (req, res, next) => {
     tagModel
     .find() // retreive all the documents in the artists collection
     .then(dbResults => {
@@ -83,7 +86,7 @@ router.get("/create-product", (req, res, next) => {
     .catch(next);
 });
 
-router.post("/create", (req, res, next) => {
+router.post("/create", protectRoute,  (req, res, next) => {
   const newSneaker = req.body;
   if (req.body.image === "") newSneaker.image = undefined;
   sneakerModel
@@ -96,7 +99,7 @@ router.post("/create", (req, res, next) => {
 });
 //      req.flash("success", "sneaker successfully created");
 
-router.post("/tag-add", (req, res, next) => {
+router.post("/tag-add", protectRoute,  (req, res, next) => {
   const { label } = req.body;
   tagModel
     .create({
@@ -109,7 +112,7 @@ router.post("/tag-add", (req, res, next) => {
     .catch(next);
 });
 
-router.post("/tag-add-mix", (req, res, next) => {
+router.post("/tag-add-mix",  protectRoute, (req, res, next) => {
   const { label } = req.body;
   tagModel
     .create({
@@ -122,18 +125,18 @@ router.post("/tag-add-mix", (req, res, next) => {
     .catch(next);
 });
 
-router.get("/create-tag", (req, res) => {
+router.get("/create-tag",  protectRoute,  (req, res) => {
     res.render("tag_add");
 });
 
+
 router.get("/signup", (req, res) => {
-  res.send("sneak");
+  res.render("auth/signup", { js: ["signup"] });
 });
 
 router.get("/signin", (req, res) => {
-  res.send("love");
+  res.render("auth/signin");
 });
-
 
 
 module.exports = router;
