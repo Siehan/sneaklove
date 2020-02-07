@@ -3,3 +3,4 @@ module.exports = function exposeFlashMessage(req, res, next) {
   res.locals.error_msg = req.flash("error");
   next();
 };
+console.log("toto")
