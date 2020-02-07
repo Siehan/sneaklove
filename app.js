@@ -13,6 +13,7 @@ const session = require("express-session");
 const mongoose = require("mongoose");
 const MongoStore = require("connect-mongo")(session);
 const cookieParser = require("cookie-parser");
+const flash = require("connect-flash");
 
 
 // initial config
@@ -26,7 +27,7 @@ app.use(express.urlencoded({
 app.use(express.json());
 app.use(cookieParser());
 
-
+app.use(flash())
 // SESSION SETUP
 app.use(
   session({
