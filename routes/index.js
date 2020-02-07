@@ -30,8 +30,6 @@ router.get("/prod-manage", (req, res, next) => {
 });
 
 
-
-
 router.get("/sneakers/:cat", (req, res, next) => {
     Promise.all([sneakerModel.find( { "category" : req.params.cat } ) , tagModel.find()])
     .then(dbResults => {
@@ -51,6 +49,18 @@ router.get("/one-product/:id", (req, res, next) => {
     })
     .catch(next);
 });
+
+router.get("/product-edit/:id", (req, res, next) => {
+    Promise.all([sneakerModel.findById( { "_id" : req.params.id } ) , tagModel.find()])
+    .then(dbResults => {
+        res.render("product_edit", {
+         sneaker : dbResults[0],
+         tags : dbResults[1]
+        });
+    })
+    .catch(next);
+});
+
 
 router.get("/create-product", (req, res, next) => {
     tagModel
