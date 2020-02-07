@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const tagModel = require("../models/Tag");
-
 const protectRoute = require("../middlewares/protectRoute");
 const protectAdminRoute = require("../middlewares/protectAdminRoute");
 
@@ -62,12 +61,13 @@ router.get("/create-product", (req, res, next) => {
 });
 
 router.post("/create-product", (req, res, next) => {
-  tagModel
-    .find()
-    .then(dbResults => {
-      res.render("products_add", {
-        tags: dbResults
-      });
+    const newSneaker = req.body;
+  if (req.body.image === "") newSneaker.image = undefined;
+  sneakerModel
+    .create(newSneaker) // use the model and try doc insertion in database
+    .then(() => {
+      req.flash("success", "Le sneaker s'est bien créé");     
+      res.redirect("/create-product");
     })
     .catch(next);
 });
