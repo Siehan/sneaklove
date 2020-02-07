@@ -30,6 +30,8 @@ router.get("/prod-manage", (req, res, next) => {
 });
 
 
+
+
 router.get("/sneakers/:cat", (req, res, next) => {
     Promise.all([sneakerModel.find( { "category" : req.params.cat } ) , tagModel.find()])
     .then(dbResults => {
