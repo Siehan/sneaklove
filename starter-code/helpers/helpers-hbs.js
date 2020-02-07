@@ -1,10 +1,12 @@
 const hbs = require("hbs");
+//const moment = require("moment");
 
 // CUSTOM HELPERS
 
 // function below: add the ternary operator functionnality to .hbs files
 // usage : {{ternary true "yay" "nay "}} => prints yay
-// usage : {{ternary NaN "yay" "nay "}} => prints nay
+// usage : {{ternary NaN "yay" "nay "}} => prints 
+
 hbs.registerHelper("ternary", (test, yes, no) => (test ? yes : no));
 
 // add comparison operator feature to hbs templates
@@ -13,7 +15,7 @@ hbs.registerHelper("ternary", (test, yes, no) => (test ? yes : no));
 USAGE =>
 
 {{#compare 1 10 operator="<"}}
-awesome, 1 is less thant 10 !!!
+awesome, 1 is less than 10 !!!
 {{/compare}}
 
 */
