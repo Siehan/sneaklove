@@ -2,67 +2,73 @@ const express = require("express");
 const router = express.Router();
 const tagModel = require("../models/Tag");
 const sneakerModel = require("../models/Sneaker");
-
+const protectRoute = require("../middlewares/protectRoute")
 router.get("/", (req, res) => {
-   res.render("index");
+  res.render("index");
 });
 
 router.get("/sneakers/collection", (req, res, next) => {
-    Promise.all([sneakerModel.find(), tagModel.find()])
+  Promise.all([sneakerModel.find(), tagModel.find()])
     .then(dbResults => {
-        res.render("products", {
-         sneakers : dbResults[0],
-         tags : dbResults[1]
-        });
+      res.render("products", {
+        sneakers: dbResults[0],
+        tags: dbResults[1]
+      });
     })
     .catch(next);
 });
 
-router.get("/prod-manage", (req, res, next) => {
-    Promise.all([sneakerModel.find(), tagModel.find()])
+router.get("/prod-manage", protectRoute, (req, res, next) => {
+  Promise.all([sneakerModel.find(), tagModel.find()])
     .then(dbResults => {
-        res.render("products_manage", {
-         sneakers : dbResults[0],
-         tags : dbResults[1]
-        });
+      res.render("products_manage", {
+        sneakers: dbResults[0],
+        tags: dbResults[1]
+      });
     })
     .catch(next);
 });
 
 
 router.get("/sneakers/:cat", (req, res, next) => {
-    Promise.all([sneakerModel.find( { "category" : req.params.cat } ) , tagModel.find()])
+  Promise.all([sneakerModel.find({
+      "category": req.params.cat
+    }), tagModel.find()])
     .then(dbResults => {
-        res.render("products", {
-         sneakers : dbResults[0],
-         tags : dbResults[1]
-        });
+      res.render("products", {
+        sneakers: dbResults[0],
+        tags: dbResults[1]
+      });
     })
     .catch(next);
 });
 
 router.get("/one-product/:id", (req, res, next) => {
-    sneakerModel
+  sneakerModel
     .findById(req.params.id) // retreive all the documents in the artists collection
     .then(dbResults => {
-        res.render("one_product",  { sneaker : dbResults });
+      res.render("one_product", {
+        sneaker: dbResults
+      });
     })
     .catch(next);
 });
 
 router.get("/product-edit/:id", (req, res, next) => {
-    Promise.all([sneakerModel.findById( { "_id" : req.params.id } ) , tagModel.find()])
+  Promise.all([sneakerModel.findById({
+      "_id": req.params.id
+    }), tagModel.find()])
     .then(dbResults => {
-        res.render("product_edit", {
-         sneaker : dbResults[0],
-         tags : dbResults[1]
-        });
+      res.render("product_edit", {
+        sneaker: dbResults[0],
+        tags: dbResults[1]
+      });
     })
     .catch(next);
 });
 
-router.get("/delete-product/:id" , (req, res, next) => {
-   sneakerModel
+router.get("/delete-product/:id", (req, res, next) => {
+  sneakerModel
     .findByIdAndDelete(req.params.id)
     .then(dbRes => {
       req.flash("success", "album successfully deleted");
@@ -73,11 +79,11 @@ router.get("/delete-product/:id" , (req, res, next) => {
 
 
 router.get("/create-product", (req, res, next) => {
-    tagModel
+  tagModel
     .find() // retreive all the documents in the artists collection
     .then(dbResults => {
-        res.render("products_add", {
-         tags : dbResults
+      res.render("products_add", {
+        tags: dbResults
       });
     })
     .catch(next);
@@ -89,7 +95,7 @@ router.post("/create-product", (req, res, next) => {
   sneakerModel
     .create(newSneaker) // use the model and try doc insertion in database
     .then(() => {
-      req.flash("success", "Le sneaker s'est bien créé");     
+      req.flash("success", "Le sneaker s'est bien créé");
       res.redirect("/create-product");
     })
     .catch(next);
@@ -97,42 +103,40 @@ router.post("/create-product", (req, res, next) => {
 //      req.flash("success", "sneaker successfully created");
 
 router.post("/tag-add", (req, res, next) => {
-  const { label } = req.body;
+  const {
+    label
+  } = req.body;
   tagModel
     .create({
       label,
     })
-    .then(dbRes => {        
-      req.flash("success", "Le tag s'est bien créé");  
+    .then(dbRes => {
+      req.flash("success", "Le tag s'est bien créé");
       res.redirect("/tag-add");
     })
     .catch(next);
 });
 
 router.post("/tag-add-mix", (req, res, next) => {
-  const { label } = req.body;
+  const {
+    label
+  } = req.body;
   tagModel
     .create({
       label,
     })
     .then(dbRes => {
-        req.flash("success", "Le sneaker automatique s'est bien créé");     
-        res.redirect("/create-product");
+      req.flash("success", "Le sneaker automatique s'est bien créé");
+      res.redirect("/create-product");
     })
     .catch(next);
 });
 
 router.get("/create-tag", (req, res) => {
-    res.render("tag_add");
+  res.render("tag_add");
 });
 
-router.get("/signup", (req, res) => {
-  res.send("sneak");
-});
 
-router.get("/signin", (req, res) => {
-  res.send("love");
-});
 
 
 
