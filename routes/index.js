@@ -18,8 +18,15 @@ router.get("/sneakers/collection", (req, res, next) => {
     .catch(next);
 });
 
-router.get("/sneakers/:cat", (req, res) => {
-  res.send("bar");
+router.get("/sneakers/:cat", (req, res, next) => {
+    Promise.all([sneakerModel.find( { "category" : req.params.cat } ) , tagModel.find()])
+    .then(dbResults => {
+        res.render("products", {
+         sneakers : dbResults[0],
+         tags : dbResults[1]
+        });
+    })
+    .catch(next);
 });
 
 router.get("/one-product/:id", (req, res, next) => {
